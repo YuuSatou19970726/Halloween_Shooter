@@ -1,0 +1,33 @@
+Unity assets required:
+
+Joystick Pack:
+
+https://assetstore.unity.com/packages/tools/input-management/joystick-pack-107631
+
+Hand painted dungeon:
+
+https://assetstore.unity.com/packages/3d/environments/stylized-hand-painted-dungeon-free-173934
+
+Halloween cemetery set:
+
+https://assetstore.unity.com/packages/3d/environments/fantasy/halloween-cemetery-set-19125
+
+Halloween Icons:
+
+https://assetstore.unity.com/packages/2d/gui/icons/halloween-icons-156667
+
+Z Character:
+
+https://assetstore.unity.com/packages/3d/characters/zcharacter-157331
+
+Low poly FPS:
+
+https://assetstore.unity.com/packages/3d/props/weapons/low-poly-fps-pack-free-sample-144839
+
+Level 1 Monster Pack:
+
+https://assetstore.unity.com/packages/3d/characters/creatures/level-1-monster-pack-77703
+
+Cartoon FX:
+
+https://assetstore.unity.com/packages/vfx/particles/cartoon-fx-free-109565
