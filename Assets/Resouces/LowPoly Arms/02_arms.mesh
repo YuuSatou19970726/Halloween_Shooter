@@ -7,7 +7,7 @@ Mesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 02_arms
-  serializedVersion: 10
+  serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
     firstByte: 0
@@ -748,6 +748,7 @@ Mesh:
     m_Center: {x: 0, y: -0.020545695, z: 0.9672184}
     m_Extent: {x: 0.8644645, y: 0.08633968, z: 0.06622359}
   m_MeshUsageFlags: 0
+  m_CookingOptions: 30
   m_BakedConvexCollisionMesh: 
   m_BakedTriangleCollisionMesh: 
   m_MeshMetrics[0]: 1
