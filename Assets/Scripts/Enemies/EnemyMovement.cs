@@ -33,7 +33,7 @@ public class EnemyMovement : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, playerTarget.position, MainController.step);
     }
 
-    void ZombieMoveTo()
+    public void ZombieMoveTo()
     {
         agent.destination = playerTarget.position;
     }

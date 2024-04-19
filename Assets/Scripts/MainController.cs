@@ -31,18 +31,33 @@ public class MainController : MonoBehaviour
     [SerializeField]
     public LayerMask targetExclude;
 
-    WaitForSeconds zombieDeathTime = new WaitForSeconds(2f);
+    WaitForSeconds zombieDeathTime = new WaitForSeconds(1.5f);
     WaitForSeconds batDeathTime = new WaitForSeconds(1f);
-    WaitForSeconds ghostDeathTime = new WaitForSeconds(0.5f);
+    WaitForSeconds ghostDeathTime = new WaitForSeconds(0.2f);
 
-    //Particles
+    // Particles
     [SerializeField]
     private GameObject zombieParticles, batParticles, ghostParticles;
+
+    // Spawn Points
+    public int zombiesOnScreen = 2;
+    public int batsOnScreen = 2;
+    public int ghostsOnScreen = 2;
+    private GameObject lastDestroyedZombie, lastDestroyedBat, lastDestroyedGhost;
+    [SerializeField]
+    private Transform spawnPoint_1, spawnPoint_2, spawnPoint_3, spawnPoint_4;
+    [SerializeField]
+    private Transform playerTarget;
+
+    private int spot = 1;
+    private Transform nextAvailableSlot;
+    WaitForSeconds spawnTime = new WaitForSeconds(1);
 
     // Start is called before the first frame update
     void Start()
     {
         Application.targetFrameRate = 60;
+        TimeCountDown();
     }
 
     // Update is called once per frame
@@ -79,6 +94,7 @@ public class MainController : MonoBehaviour
                 hit.transform.gameObject.GetComponent<Animator>().SetTrigger(AnimationTags.DIE_TRIGGER);
                 zombieParticles.transform.position = hit.transform.position;
                 zombieParticles.SetActive(true);
+                lastDestroyedZombie = hit.transform.gameObject;
 
                 StartCoroutine(ZombieDeath());
             }
@@ -88,6 +104,8 @@ public class MainController : MonoBehaviour
                 hit.transform.gameObject.GetComponent<Animator>().SetTrigger(AnimationTags.DIE_TRIGGER);
                 batParticles.transform.position = hit.transform.position;
                 batParticles.SetActive(true);
+                lastDestroyedBat = hit.transform.gameObject;
+
                 StartCoroutine(BatDeath());
             }
 
@@ -95,6 +113,8 @@ public class MainController : MonoBehaviour
             {
                 ghostParticles.transform.position = hit.transform.position;
                 ghostParticles.SetActive(true);
+                lastDestroyedGhost = hit.transform.gameObject;
+
                 StartCoroutine(GhostDeath());
             }
         }
@@ -103,19 +123,25 @@ public class MainController : MonoBehaviour
     IEnumerator ZombieDeath()
     {
         yield return zombieDeathTime;
-        hit.transform.gameObject.SetActive(false);
+        if (hit.transform.gameObject.activeInHierarchy)
+            hit.transform.gameObject.SetActive(false);
+        zombiesOnScreen--;
     }
 
     IEnumerator BatDeath()
     {
         yield return batDeathTime;
-        hit.transform.gameObject.SetActive(false);
+        if (hit.transform.gameObject.activeInHierarchy)
+            hit.transform.gameObject.SetActive(false);
+        batsOnScreen--;
     }
 
     IEnumerator GhostDeath()
     {
         yield return ghostDeathTime;
-        hit.transform.gameObject.SetActive(false);
+        if (hit.transform.gameObject.activeInHierarchy)
+            hit.transform.gameObject.SetActive(false);
+        ghostsOnScreen--;
     }
 
     public void Reload()
@@ -123,5 +149,86 @@ public class MainController : MonoBehaviour
         armsAnim.SetTrigger(AnimationTags.RELOAD_TRIGGER);
     }
 
+    void TimeCountDown()
+    {
+        StartCoroutine(TimeDelay());
+    }
 
+    IEnumerator TimeDelay()
+    {
+        yield return spawnTime;
+        TimeCountDown();
+        CheckForEnemies();
+    }
+
+    void CheckForEnemies()
+    {
+        if (zombiesOnScreen < 2)
+        {
+            CheckSpots();
+            if (lastDestroyedZombie != null)
+            {
+                lastDestroyedZombie.transform.position = nextAvailableSlot.position;
+                if (spot < 4)
+                    spot++;
+                if (spot == 4)
+                    spot = 1;
+                lastDestroyedZombie.transform.LookAt(playerTarget);
+                lastDestroyedZombie.SetActive(true);
+                lastDestroyedZombie.GetComponent<EnemyMovement>().ZombieMoveTo();
+                zombiesOnScreen++;
+            }
+        }
+
+        if (batsOnScreen < 2)
+        {
+            CheckSpots();
+            if (lastDestroyedBat != null)
+            {
+                lastDestroyedBat.transform.position = nextAvailableSlot.position;
+                if (spot < 4)
+                    spot++;
+                if (spot == 4)
+                    spot = 1;
+                lastDestroyedBat.transform.LookAt(playerTarget);
+                lastDestroyedBat.SetActive(true);
+                batsOnScreen++;
+            }
+        }
+
+        if (ghostsOnScreen < 2)
+        {
+            CheckSpots();
+            if (lastDestroyedGhost != null)
+            {
+                lastDestroyedGhost.transform.position = nextAvailableSlot.position;
+                if (spot < 4)
+                    spot++;
+                if (spot == 4)
+                    spot = 1;
+                lastDestroyedGhost.transform.LookAt(playerTarget);
+                lastDestroyedGhost.SetActive(true);
+                ghostsOnScreen++;
+            }
+        }
+    }
+
+    void CheckSpots()
+    {
+        switch (spot)
+        {
+            case 1:
+                nextAvailableSlot = spawnPoint_1;
+                break;
+            case 2:
+                nextAvailableSlot = spawnPoint_2;
+                break;
+            case 3:
+                nextAvailableSlot = spawnPoint_3;
+                break;
+            case 4:
+                nextAvailableSlot = spawnPoint_4;
+                break;
+        }
+    }
 }
