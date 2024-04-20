@@ -7,6 +7,7 @@ public class Tags
     public const string ZOMBIE_TAG = "Zombie";
     public const string BAT_TAG = "Bat";
     public const string GHOST_TAG = "Ghost";
+    public const string PUMPKIN_TAG = "Pumpkin";
 }
 
 public class AnimationTags
